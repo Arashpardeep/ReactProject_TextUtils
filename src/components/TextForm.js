@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 export default function TextForm(props) {
 
   const handleUpClick = () => {
-    // console.log("Uppercase was clicked" + text);
     let newText = text.toUpperCase();
     // text = "You have clicked on handleUpClick"; // Wrong way to change the state
     setText(newText); // Correct way to change the state
@@ -30,11 +29,8 @@ export default function TextForm(props) {
     props.showAlert("Converted to camelcase!", "success");
   }
 
-  const handleCopy = () => {
-    var text = document.getElementById("myBox");
-    text.select(); // This will select the text
-    navigator.clipboard.writeText(text.value); // Copy the selected text to clipboard
-    document.getSelection().removeAllRanges(); // Remove the highlight from the selected text
+  const handleCopy = () => { 
+    navigator.clipboard.writeText(text); // This is a modern way to copy text to clipboard
     props.showAlert("Copied to clipboard!", "success");
   }
 
@@ -99,7 +95,8 @@ export default function TextForm(props) {
       </div>
       <div className="container my-3" style={{color: props.mode === 'light' ? 'black' : 'white'}}>
         <h1 className='mb-4'>Your text summary</h1>
-        <p>{text.split(" ").filter((element)=>{return element.length!==0}).length} words, {text.length} characters</p>
+        <p>{text.split(/\s+/).filter((element)=>{return element.length!==0}).length} words, {text.length} characters</p>
+        {/* Here \s+ is a regular expression, as we have to write regular expressions in //, so we are writing it as /\s+/, \s is a regular expression to denote white space, and when we add + to it, then it means one or more than one white spaces, and white spaces also includes new line, so it also resolve the new line issue */}
         <p>Takes {0.008 * text.split(" ").filter((element)=>{return element.length!==0}).length} minutes to read</p>
         <h2>Preview</h2>
         <p>{text.length > 0 ? text : "Nothing to Preview!"}</p>

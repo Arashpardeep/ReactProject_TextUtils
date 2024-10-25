@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
 export default function Navbar(props) {
+  const [activeLink, setActiveLink] = useState('home');
+
+  const handleNavClick = (link) => {
+    setActiveLink(link);
+  }
+
   return (
     <nav className={`navbar navbar-expand-lg navbar-${props.mode} bg-${props.theme}`}>
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
+        <Link className="navbar-brand" to="/" onClick={() => handleNavClick('home')}>
+        {/* events need a function, not a function call, so if we write onClick{handleNavClick('home')}, it becomes a function call, so to resolve this, we pass an arrow function which indeed call the function we need, as here we did as onClick={() => handleNavClick('home')} */}
           {props.title}
         </Link>
         <button
@@ -23,12 +30,12 @@ export default function Navbar(props) {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/">
+              <Link className={`nav-link ${activeLink === 'home' ? 'active' : ''}`} aria-current="page" to="/" onClick={() => handleNavClick('home')}>
                 {props.homeText}
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/about">
+              <Link className={`nav-link ${activeLink === 'about' ? 'active' : ''}`} to="/about" onClick={() => handleNavClick('about')}>
                 {props.aboutText}
               </Link>
             </li>
